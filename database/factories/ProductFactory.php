@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
-        'name' => $name = $faker->unique()->product,
+        'name' => $name = $faker->unique()->name,
         'slug' => str::slug($name),
         'price' => $faker->numberBetween(1000, 6000),
         'description' => $faker->text,
