@@ -15,7 +15,7 @@ class ProductIndexTest extends TestCase
         
       $products = factory(Product::class, 2)->create();
 
-      $response = $this->json('GET', 'api/products-list');
+      $response = $this->json('GET', 'api/products');
 
       $products->each(function($product) use ($response) {
         $response->assertJsonFragment([
