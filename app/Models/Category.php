@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\HasChildren;
-use App\Traits\IsOrderable;
+use App\Models\Traits\HasChildren;
+use App\Models\Traits\IsOrderable;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
