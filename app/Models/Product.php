@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Scoping\Scoper;
 use Illuminate\Database\Eloquent\Builder;

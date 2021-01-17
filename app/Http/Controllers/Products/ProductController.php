@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductIndexResource;
 use App\Http\Resources\ProductResource;
-use App\Product;
+use App\Models\Product;
 use App\Scoping\Scopes\CategoryScope;
 
 class ProductController extends Controller

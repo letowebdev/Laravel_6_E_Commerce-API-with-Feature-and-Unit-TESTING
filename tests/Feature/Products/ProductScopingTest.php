@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Products;
 
-use App\Category;
-use App\Product;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
