@@ -20,7 +20,7 @@ class Money
     public function formatted()
     {
         $formatter = new IntlMoneyFormatter(
-            new NumberFormatter('de_EUR', NumberFormatter::CURRENCY),
+            new NumberFormatter('de_DE', NumberFormatter::CURRENCY),
             new ISOCurrencies(),  
         );
 
