@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasChildren;
 use App\Models\Traits\IsOrderable;
+use App\Models\Traits\IsParent;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasChildren, IsOrderable;
-
-    protected $fillable = ['name', 'order', 'slug'];
-
+    use IsParent, IsOrderable;
 
     public function children()
     {
@@ -22,4 +19,8 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+
+
+
 }

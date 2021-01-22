@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Filtering\Filters\CategoryFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductIndexResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Scoping\Scopes\CategoryScope;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class productController extends Controller
 {
     public function index()
     {
-        $products = Product::withScopes($this->scopes())->paginate(10);
-
         return ProductIndexResource::collection(
-            $products
-        );
+            $products = Product::withFilter($this->filters())->paginate(10)
+        );     
     }
 
     public function show(Product $product)
     {
-        return new ProductResource($product);
+        return new ProductResource(
+            $product
+        );
     }
 
-    protected function scopes()
+    public function filters()
     {
         return [
-            'category' => new CategoryScope()
+            'category' => new CategoryFilter()
         ];
     }
 }

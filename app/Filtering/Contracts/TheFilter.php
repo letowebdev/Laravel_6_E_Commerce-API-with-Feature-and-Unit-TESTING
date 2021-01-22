@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Scoping\Contracts;
+namespace App\Filtering\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface Scope
+interface TheFilter
 {
     public function apply(Builder $builder, $value);
 }

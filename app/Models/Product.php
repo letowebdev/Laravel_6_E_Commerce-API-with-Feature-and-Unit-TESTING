@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scoping\Scoper;
+use App\Filtering\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,14 +13,14 @@ class Product extends Model
         return 'slug';
     }
 
-    public function scopeWithScopes(Builder $builder, $scopes = [])
-    {
-        return (new Scoper(request()))->apply($builder, $scopes);
-    }
-
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function scopeWithFilter(Builder $builder, $filters = [])
+    {
+        return (new Filter(request()))->apply($builder, $filters);
     }
 
     public function variations()

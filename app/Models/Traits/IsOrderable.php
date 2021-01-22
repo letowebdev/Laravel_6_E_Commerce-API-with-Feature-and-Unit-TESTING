@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
 trait IsOrderable
 {
-    public function scopeOrdered(Builder $builder, $sorted = 'asc')
+    public function scopeOrdered(Builder $builder, $sort = 'asc')
     {
-        $builder->orderBy('order', $sorted);
+        $builder->orderBy('order', $sort);
     }
 }
