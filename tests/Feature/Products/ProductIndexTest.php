@@ -2,30 +2,38 @@
 
 namespace Tests\Feature\Products;
 
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class ProductFilteringTest extends TestCase
+class ProductIndexTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_it_filters_by_category()
+    public function test_it_shows_a_list_of_products()
     {
-        $category = factory(Category::class)->create();
+        $products = factory(Product::class, 2)->create();
 
-        $category->products()->save(
-           factory(Product::class)->create()
-        );
-      
-        $this->json('GET', "api/products?category={$category->slug}")
-             ->assertJsonCount(1, 'data');
+        // $this->json('GET', 'api/products')
+        //      ->assertJsonFragment([
+        //         $products->name,
+        //      ]);
 
-        $another_category = factory(Category::class)->create();
+        $response = $this->json('GET', 'api/products');
 
-        $this->json('GET', "api/products?category={$another_category->slug}")
-        ->assertJsonCount(0, 'data');
+        $products->each(function ($product) use ($response){
+            $response->assertJsonFragment([
+                $product->name,
+            ]);
+        });
     }
 
+    public function test_it_has_pagination()
+    {
+        $this->json('GET', 'api/products')
+             ->assertJsonStructure([
+                 'links'
+             ]);
+    }
+    
 }
