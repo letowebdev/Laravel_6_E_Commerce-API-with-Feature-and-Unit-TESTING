@@ -12,11 +12,12 @@ class ProductVariationTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_it_has_one_variation_type()
+    public function test_it_has_one_type()
     {
         $variation = factory(ProductVariation::class)->create();
 
         $this->assertInstanceOf(ProductVariationType::class, $variation->type);
+        
     }
 
     public function test_it_belongs_to_a_product()
@@ -24,5 +25,7 @@ class ProductVariationTest extends TestCase
         $variation = factory(ProductVariation::class)->create();
 
         $this->assertInstanceOf(Product::class, $variation->product);
+        
     }
+
 }

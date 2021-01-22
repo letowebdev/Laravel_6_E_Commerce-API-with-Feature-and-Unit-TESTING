@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit\Models\Products;
+namespace Tests\Unit\Products;
 
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -12,9 +13,10 @@ class ProductTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_it_uses_the_slug_for_the_route_key_name()
+    public function test_it_uses_the_slug_for_the_route()
     {
-        $product = new Product();
+        $product = factory(Product::class)->create();
+
         $this->assertEquals($product->getRouteKeyName(), 'slug');
     }
 
@@ -29,7 +31,7 @@ class ProductTest extends TestCase
         $this->assertInstanceOf(Category::class, $product->categories->first());
     }
 
-    public function test_it_has_many_variations()
+    public function test_it_has_variations()
     {
         $product = factory(Product::class)->create();
 
@@ -37,6 +39,8 @@ class ProductTest extends TestCase
             factory(ProductVariation::class)->create()
         );
 
-        $this->assertInstanceOf(ProductVariation::class, $product->variations->first());
+        $this->assertInstanceOf(Collection::class, $product->variations);
     }
 }
+
+
