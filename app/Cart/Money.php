@@ -26,4 +26,9 @@ class Money
 
         return $formatter->format($this->money);
     }
+
+    public function amount()
+    {
+        return $this->money->getAmount();
+    }
 }
