@@ -6,6 +6,8 @@ use App\Cart\Money;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationType;
+use App\Models\Stock;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -79,6 +81,16 @@ class ProductVariationTest extends TestCase
         ]);
 
         $this->assertTrue($variation->priceVaries);
+    }
+
+    public function test_it_has_many_stocks()
+    {
+        $variation = factory(ProductVariation::class)->create();
+        $variation->stocks()->save(
+            factory(Stock::class)->create()
+        );
+
+        $this->assertInstanceOf(Collection::class, $variation->stocks);
     }
 
 
