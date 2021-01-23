@@ -62,6 +62,6 @@ GROUP BY
      */
     public function down()
     {
-        DB::statement("DROP IF EXISTS product_variation_stock_view");
+        DB::statement("DROP VIEW IF EXISTS product_variation_stock_view");
     }
 }
