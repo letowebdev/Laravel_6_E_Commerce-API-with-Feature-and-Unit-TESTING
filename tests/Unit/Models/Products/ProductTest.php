@@ -6,6 +6,7 @@ use App\Cart\Money;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariation;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -65,6 +66,22 @@ class ProductTest extends TestCase
         $regular_spaces = preg_replace('/\xc2\xa0/', ' ', $original_string);
         */ 
         $this->assertEquals( preg_replace('/\xc2\xa0/', ' ', $product->formattedPrice),'70,00 €');
+    }
+
+    public function test_it_can_get_the_stock_count()
+    {
+        $product = factory(Product::class)->create();
+        $product->variations()->save(
+            $variation = factory(ProductVariation::class)->create()
+        );
+
+        $variation->stocks()->save(
+            factory(Stock::class)->create([
+                'quantity' => $quantity = 1000
+            ])
+        );
+
+        $this->assertEquals($product->stockCount(), $quantity);
     }
 }
 
