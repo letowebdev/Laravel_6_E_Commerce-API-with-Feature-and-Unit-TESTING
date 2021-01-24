@@ -23,13 +23,10 @@ SELECT
         SUM(stocks.quantity) - COALESCE(SUM(product_variation_order.quantity), 0),
         0
     ) as stock,
-    case
-        when COALESCE(
-            SUM(stocks.quantity) - COALESCE(SUM(product_variation_order.quantity), 0),
-            0
-        ) > 0 then true
-        else false
-    end in_stock
+    CASE WHEN COALESCE(SUM(stocks.quantity) - COALESCE(SUM(product_variation_order.quantity), 0), 0) > 0
+		THEN 'true'
+		ELSE 'false'
+	END in_stock
 FROM
     product_variations
     LEFT JOIN(
