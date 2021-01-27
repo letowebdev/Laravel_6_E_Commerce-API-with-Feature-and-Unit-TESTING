@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Models\Users;
 
+use App\Models\ProductVariation;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -17,6 +19,34 @@ class UserTest extends TestCase
          ]);
 
          $this->assertNotEquals($user->password, 'my_cat');
+
+    }
+
+    public function test_cart_has_a_collection_of_products()
+    {
+        $user = factory(User::class)->create();
+
+        $user->cart()->save(
+            factory(ProductVariation::class)->create(), [
+                'quantity' => 1 
+            ]
+        );
+
+        $this->assertInstanceOf(Collection::class, $user->cart);
+
+    }
+
+    public function test_it_has_a_quantity_for_each_cart_product()
+    {
+        $user = factory(User::class)->create();
+
+        $user->cart()->save(
+            factory(ProductVariation::class)->create(), [
+                'quantity' => $quantity = 7 
+            ]
+        );
+
+        $this->assertEquals($user->cart->first()->pivot->quantity, $quantity);
 
     }
 }
