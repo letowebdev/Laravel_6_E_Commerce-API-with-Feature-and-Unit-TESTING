@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
          * A temporary solution since the (auth:api) middleware 
          * in laravel 6 redirect to the login page if not authorized
          */
-        if ($request->is('api/auth/me')) {
+        if ($request->is('api/*')) {
             return response()->json(
                 [
                     'errors' => [
