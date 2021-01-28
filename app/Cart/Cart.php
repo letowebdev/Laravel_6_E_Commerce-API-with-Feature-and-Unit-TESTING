@@ -35,6 +35,12 @@ class Cart
         $this->user->cart()->detach($productId);
     }
 
+    //If we place an order successfully we need to empty the cart
+    public function emtpy()
+    {
+        $this->user->cart()->detach();
+    }
+
 
     protected function getStorePayLoad($products)
     {
