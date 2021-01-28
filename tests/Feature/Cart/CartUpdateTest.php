@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class CartUpdatingTest extends TestCase
+class CartUpdateTest extends TestCase
 {
     use DatabaseMigrations;
 
