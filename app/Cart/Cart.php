@@ -41,6 +41,12 @@ class Cart
         $this->user->cart()->detach();
     }
 
+    //check if the cart is empty
+    public function isEmpty()
+    {
+        return $this->user->cart->sum('pivot.quantity') === 0;
+    }
+
 
     protected function getStorePayLoad($products)
     {
