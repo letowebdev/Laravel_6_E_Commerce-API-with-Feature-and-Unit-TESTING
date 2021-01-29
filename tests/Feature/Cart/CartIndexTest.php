@@ -79,4 +79,30 @@ class CartIndexTest extends TestCase
         
         $this->assertEquals( str_replace("\xc2\xa0", ' ',  $cart->total()->formatted()),'210,00 €');
     }
+
+    public function test_it_syncs_the_cart()
+    {
+        $user = factory(User::class)->create();
+
+        $user->cart()->attach(
+            factory(ProductVariation::class)->create(), [
+               'quantity' => 2
+            ]
+        );
+
+        $this->jsonAs($user, 'GET', 'api/cart')
+             ->assertJsonFragment([
+                'changed' => true
+             ]);
+    }
+
+    public function test_it_does_not_sync_if_there_were_no_changes()
+    {
+        $user = factory(User::class)->create();
+
+        $this->jsonAs($user, 'GET', 'api/cart')
+             ->assertJsonFragment([
+                'changed' => false
+             ]);
+    }
 }
