@@ -47,6 +47,22 @@ class Cart
         return $this->user->cart->sum('pivot.quantity') === 0;
     }
 
+    //Calculating the subtotal
+    public function subTotal()
+    {
+        $sub_total = $this->user->cart->sum(function ($product){
+            return $product->price->amount() * $product->pivot->quantity;
+        });
+
+        return new Money($sub_total);
+    }
+
+    //The total counts the subtotal plus the shipping and taxes
+    public function total()
+    {
+        return $this->subtotal();
+    }
+
 
     protected function getStorePayLoad($products)
     {

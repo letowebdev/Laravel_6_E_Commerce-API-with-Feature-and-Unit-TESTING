@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Cart;
 
+use App\Cart\Cart;
 use App\Models\ProductVariation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -43,5 +44,39 @@ class CartIndexTest extends TestCase
              ->assertJsonFragment([
                 'empty' => true
              ]);
+    }
+
+    public function test_it_shows_a_formatted_subTotal()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+         );
+ 
+         $user->cart()->attach(
+             factory(ProductVariation::class)->create([
+                 'price' => 7000
+             ]), [
+                'quantity' => 2
+             ]
+         );
+        
+        $this->assertEquals( str_replace("\xc2\xa0", ' ',  $cart->subTotal()->formatted()),'140,00 €');
+    }
+
+    public function test_it_shows_a_formatted_total()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+         );
+ 
+         $user->cart()->attach(
+             factory(ProductVariation::class)->create([
+                 'price' => 7000
+             ]), [
+                'quantity' => 3
+             ]
+         );
+        
+        $this->assertEquals( str_replace("\xc2\xa0", ' ',  $cart->total()->formatted()),'210,00 €');
     }
 }
