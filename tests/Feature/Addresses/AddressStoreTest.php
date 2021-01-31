@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Addresses;
 
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -54,5 +55,39 @@ class AddressStoreTest extends TestCase
         $this->be($user);
         $this->json('POST', 'api/addresses')
              ->assertSee('The country id field is required.');
+    }
+
+    public function test_it_stores_an_address()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+
+        $this->json('POST', 'api/addresses', [
+            $address = factory(Address::class)->create()
+            ]);
+
+        $this->assertDatabaseHas('addresses', [
+            'name' => $address->name,
+            'address_1' => $address->address_1,
+            'city' => $address->city,
+            'postal_code' => $address->postal_code,
+            'country_id' => $address->country_id
+
+        ]);
+    }
+
+    public function test_it_returns_a_json_response_with_data()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+
+        $reponse = $this->json('POST', 'api/addresses', [
+            $address = factory(Address::class)->create()
+            ]);
+
+        $reponse->assertJsonFragment([
+            'name' => json_decode($reponse->getContent())->name,
+            'city' => json_decode($reponse->getContent())->city
+        ]); 
     }
 }
