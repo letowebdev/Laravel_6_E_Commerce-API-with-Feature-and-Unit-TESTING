@@ -17,6 +17,7 @@ class CreateAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->index();
             $table->bigInteger('country_id')->unsigned()->index();
+            $table->boolean('default')->default(false);
             $table->string('name');
             $table->string('address_1');
             $table->string('postal_code');
