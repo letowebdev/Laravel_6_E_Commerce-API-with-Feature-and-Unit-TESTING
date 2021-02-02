@@ -60,6 +60,7 @@ class Handler extends ExceptionHandler
         if ($request->is('api/auth/me',
                          'api/cart', 
                          'api/addresses',
+                         'api/addresses/*',
                          'api/countries',
                          )) {
             return response()->json(
