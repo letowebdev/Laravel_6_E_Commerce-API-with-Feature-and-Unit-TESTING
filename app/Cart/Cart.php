@@ -2,17 +2,27 @@
 
 namespace App\Cart;
 
+use App\Models\ShippingMethod;
 use App\Models\User;
 
 class Cart
 {
     protected $user;
 
+    protected $shipping;
+
     protected $changed = false;
 
     public function __construct(User $user)
     {
         $this->user = $user;
+    }
+
+    public function withShipping($shippingId)
+    {
+        $this->shipping = ShippingMethod::find($shippingId);
+
+        return $this;
     }
 
     public function add($products)
@@ -62,6 +72,10 @@ class Cart
     //The total counts the subtotal plus the shipping and taxes
     public function total()
     {
+        if ($this->shipping)
+        {
+            return $this->subTotal()->add($this->shipping->price);
+        }
         return $this->subtotal();
     }
 
