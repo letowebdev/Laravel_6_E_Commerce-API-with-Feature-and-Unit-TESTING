@@ -4,6 +4,7 @@ namespace Tests\Feature\Cart;
 
 use App\Cart\Cart;
 use App\Models\ProductVariation;
+use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -104,5 +105,29 @@ class CartIndexTest extends TestCase
              ->assertJsonFragment([
                 'changed' => false
              ]);
+    }
+
+    public function test_it_shows_a_formatted_total_with_shipping()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+          );
+ 
+          $shipping = factory(ShippingMethod::class)->create([
+             'price' => 100
+          ]);
+ 
+         $user->cart()->attach(
+             $product = factory(ProductVariation::class)->create([
+                 'price' => 1000
+             ]),
+             [
+                 'quantity' => 2
+             ]
+         );
+ 
+         $cart->withShipping($shipping->id);
+ 
+         $this->assertEquals(str_replace("\xc2\xa0", ' ', $cart->total()->formatted()), '21,00 €');
     }
 }
