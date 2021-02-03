@@ -3,6 +3,8 @@
 namespace Tests\Feature\Orders;
 
 use App\Models\Address;
+use App\Models\Country;
+use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -67,6 +69,26 @@ class OrderStoreTest extends TestCase
         $this->json('POST', 'api/orders', [
             'address_id' => 1
         ])->assertSee("The shipping method id field is required");
+    }
+
+    public function test_it_requires_a_shipping_method_that_is_valid_for_the_giving_address()
+    {
+        $user = factory(User::class)->create();
+
+        $this->be($user);
+
+        $country = factory(Country::class)->create();
+
+        factory(Address::class)->create([
+            'user_id' => $user->id,
+            'country_id' => $country->id
+        ]);
+
+        factory(ShippingMethod::class)->create();
+
+        $this->json('POST', 'api/orders', [
+            'shipping_method_id' => 1
+        ])->assertSee("Invalid shipping method");
     }
 
     
