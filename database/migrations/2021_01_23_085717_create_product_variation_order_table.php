@@ -19,8 +19,8 @@ class CreateProductVariationOrderTable extends Migration
             $table->integer('quantity')->unsigned();
             $table->timestamps();
 
-            $table->foreign('product_variation_id')->references('id')->on('product_variations')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_variation_id')->references('id')->on('product_variations');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
