@@ -13,6 +13,13 @@ class OrderTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function test_it_has_a_default_status()
+    { 
+        $order = factory(Order::class)->create();
+
+        $this->assertEquals($order->status, Order::PENDING);
+    }
+
     public function test_it_belongs_to_a_user()
     {
 
