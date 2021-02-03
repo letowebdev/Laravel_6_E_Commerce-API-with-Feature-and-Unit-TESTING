@@ -18,7 +18,8 @@ class Order extends Model
         'user_id',
         'address_id',
         'shipping_method_id',
-        'status'
+        'status',
+        'subtotal'
     ];
 
     public static function boot()

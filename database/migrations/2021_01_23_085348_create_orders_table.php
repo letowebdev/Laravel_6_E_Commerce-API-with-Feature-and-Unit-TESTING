@@ -19,11 +19,12 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('address_id')->unsigned()->index();
             $table->bigInteger('shipping_method_id')->unsigned()->index();
             $table->string('status')->default('pending');
+            $table->integer('subtotal');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('address_id')->references('id')->on('addresses');
-            $table->foreign('shipping_method_id')->references('id')->on('shipping_methods')->onDelete('cascade')->onUpdate('cascade');;
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('shipping_method_id')->references('id')->on('shipping_methods')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
