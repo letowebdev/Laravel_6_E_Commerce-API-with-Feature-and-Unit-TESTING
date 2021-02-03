@@ -6,6 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    const PENDING = 'pending';
+    const PROCESSING = 'processing';
+    const PAYMENT_FAILD = 'payment_faild';
+    const COMPLETED = 'completed';
+    const REFUND_REQUESTED = 'refund_requested';
+    const REFUNDING = 'refunding';
+    const REFUND_COMPLETED = 'refund_completed';
+
+    protected $fillable = [
+        'user_id',
+        'address_id',
+        'shipping_method_id',
+        'status'
+    ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($order){
+            $order->status = self::PENDING;
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

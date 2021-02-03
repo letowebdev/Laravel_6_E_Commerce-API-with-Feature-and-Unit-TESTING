@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('user_id')->unsigned()->index();
             $table->bigInteger('address_id')->unsigned()->index();
             $table->bigInteger('shipping_method_id')->unsigned()->index();
+            $table->string('status')->default('pending');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
