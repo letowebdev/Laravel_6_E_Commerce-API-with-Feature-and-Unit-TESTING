@@ -4,7 +4,10 @@ namespace Tests\Feature\Orders;
 
 use App\Models\Address;
 use App\Models\Country;
+use App\Models\Order;
+use App\Models\ProductVariation;
 use App\Models\ShippingMethod;
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -89,6 +92,20 @@ class OrderStoreTest extends TestCase
         $this->json('POST', 'api/orders', [
             'shipping_method_id' => 1
         ])->assertSee("Invalid shipping method");
+    }
+
+    public function test_it_stores_an_order()
+    {
+        $this->json('POST', 'api/orders', [
+            $order = factory(Order::class)->create()
+            ]);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'user_id' => $order->user_id,
+            'shipping_method_id' => $order->shipping_method_id
+
+        ]);
     }
 
     
