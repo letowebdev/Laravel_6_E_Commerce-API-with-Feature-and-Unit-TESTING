@@ -73,4 +73,6 @@ class UserTest extends TestCase
 
         $this->assertInstanceOf(Order::class, $user->orders->first());
     }
+
+    
 }
