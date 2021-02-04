@@ -17,6 +17,14 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request, Cart $cart)
     {
         $order = $this->createOrder($request, $cart);
+
+        $products = $cart->products()->keyBy('id')->map(function ($product){
+            return [
+                'quantity' => $product->pivot->quantity
+            ];
+        });
+
+        $order->products()->sync($products);
     }
 
     protected function createOrder(Request $request, Cart $cart)
