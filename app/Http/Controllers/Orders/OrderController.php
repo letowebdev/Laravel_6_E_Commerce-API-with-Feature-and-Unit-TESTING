@@ -18,13 +18,15 @@ class OrderController extends Controller
     {
         $order = $this->createOrder($request, $cart);
 
-        $products = $cart->products()->keyBy('id')->map(function ($product){
-            return [
-                'quantity' => $product->pivot->quantity
-            ];
-        });
+        //after refactoring
+        $order->products()->sync($cart->products()->forSyncing());
 
-        $order->products()->sync($products);
+        // $products = $cart->products()->keyBy('id')->map(function ($product){
+        //     return [
+        //         'quantity' => $product->pivot->quantity
+        //     ];
+        // });
+        // $order->products()->sync($products);
     }
 
     protected function createOrder(Request $request, Cart $cart)
