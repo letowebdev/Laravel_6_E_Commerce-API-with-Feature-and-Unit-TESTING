@@ -28,6 +28,8 @@ class CreateShippingMethodsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('shipping_methods');
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Unit\Models\Orders;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\ProductVariation;
 use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -46,5 +47,32 @@ class OrderTest extends TestCase
 
         $this->assertInstanceOf(ShippingMethod::class, $order->shipping_method);
     }
+
+    public function test_it_has_many_product_variations()
+    {
+        $order = factory(Order::class)->create();
+        $order->products()->attach(
+            factory(ProductVariation::class)->create(), [
+                'quantity' => 2
+            ]
+        );
+
+        $this->assertInstanceOf(ProductVariation::class, $order->products->first());
+
+    }
+
+    public function test_it_can_have_a_quantity_attach_to_the_product()
+    {
+        $order = factory(Order::class)->create();
+        $order->products()->attach(
+            factory(ProductVariation::class)->create(), [
+                'quantity' => $quantity = 2
+            ]
+        );
+
+        $this->assertEquals($order->products->first()->pivot->quantity, $quantity);
+
+    }
+
 
 }
