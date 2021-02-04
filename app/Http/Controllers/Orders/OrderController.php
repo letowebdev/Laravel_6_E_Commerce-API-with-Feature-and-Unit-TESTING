@@ -16,6 +16,10 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request, Cart $cart)
     {
+        //checking if the cart is empty before placing an order
+        if ($cart->isEmpty()) {
+            return response(null, 400);
+        }
         $order = $this->createOrder($request, $cart);
 
         //after refactoring

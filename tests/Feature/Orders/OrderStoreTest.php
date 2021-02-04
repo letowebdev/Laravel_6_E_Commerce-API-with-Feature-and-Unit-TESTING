@@ -108,8 +108,56 @@ class OrderStoreTest extends TestCase
         ]);
     }
 
-    
+    // public function test_it_attaches_the_products_to_the_order()
+    // {   
+    //     // TO DO 
+    // }
 
+    public function test_it_does_not_place_an_order_if_the_cart_is_empty()
+    {
+        $user = factory(User::class)->create();
+
+        $user->cart()->sync([
+            ($product = $this->productWithStock())->id => [
+                'quantity' => 0
+            ]
+        ]);
+
+        list($address, $shipping) = $this->orderDependencies($user);
+
+        $response = $this->jsonAs($user, 'POST', 'api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id
+        ])
+            ->assertStatus(400);
+
+        
+    }
+
+
+    protected function productWithStock()
+    {
+        $product = factory(ProductVariation::class)->create();
+
+        factory(Stock::class)->create([
+            'product_variation_id' => $product->id
+        ]);
+
+        return $product;
+    }
+
+    protected function orderDependencies(User $user)
+    {
+
+        $address = factory(Address::class)->create();
+
+        $shipping = factory(ShippingMethod::class)->create();
+
+        $shipping->countries()->attach($address->country);
+
+
+        return [$address, $shipping];
+    }
 
 
     

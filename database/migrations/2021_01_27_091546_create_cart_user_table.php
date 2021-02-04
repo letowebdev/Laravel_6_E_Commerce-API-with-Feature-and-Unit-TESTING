@@ -17,7 +17,7 @@ class CreateCartUserTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->index();
             $table->bigInteger('product_variation_id')->unsigned()->index();
-            $table->bigInteger('quantity')->unsigned();
+            $table->bigInteger('quantity')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
