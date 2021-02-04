@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Orders;
 
+use App\Events\Order\OrderCreated;
 use App\Models\Address;
 use App\Models\Country;
 use App\Models\Order;
@@ -9,6 +10,7 @@ use App\Models\ProductVariation;
 use App\Models\ShippingMethod;
 use App\Models\Stock;
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -133,6 +135,40 @@ class OrderStoreTest extends TestCase
 
         
     }
+
+    public function test_it_empties_the_cart_when_ordering()
+    {
+        $user = factory(User::class)->create();
+
+        $this->json('POST', 'api/orders', [
+            $order = factory(Order::class)->create()
+            ]);
+
+        $this->assertEmpty($user->cart);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 
     protected function productWithStock()

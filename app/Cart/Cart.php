@@ -54,7 +54,7 @@ class Cart
     }
 
     //If we place an order successfully we need to empty the cart
-    public function emtpy()
+    public function empty()
     {
         $this->user->cart()->detach();
     }

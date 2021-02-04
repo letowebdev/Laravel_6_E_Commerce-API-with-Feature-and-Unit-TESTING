@@ -106,7 +106,7 @@ class CartTest extends TestCase
              ['quantity' => 1]
          );
  
-         $cart->emtpy();
+         $cart->empty();
  
          $this->assertCount(0, $user->fresh()->cart);
 
