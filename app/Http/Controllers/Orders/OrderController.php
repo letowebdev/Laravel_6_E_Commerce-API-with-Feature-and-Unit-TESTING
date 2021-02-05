@@ -16,6 +16,25 @@ class OrderController extends Controller
         $this->middleware(['auth:api']);
     }
 
+    public function index(Request $request)
+    {
+        $orders = $request->user()->orders()
+            ->with([
+                'products',
+                'products.stock',
+                'products.type',
+                'products.product',
+                'products.product.variations',
+                'products.product.variations.stock',
+                'address',
+                'shipping_method'
+            ])
+            ->latest()
+            ->paginate(10);
+
+        return OrderResource::collection($orders);
+    }
+
     public function store(OrderStoreRequest $request, Cart $cart)
     {   
         $cart->sync();
