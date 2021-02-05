@@ -6,6 +6,7 @@ use App\Cart\Cart;
 use App\Events\Order\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\OrderStoreRequest;
+use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -27,6 +28,10 @@ class OrderController extends Controller
         $order->products()->sync($cart->products()->forSyncing());
 
         event(new OrderCreated($order));
+
+        // $order->load(['shipping_method']);
+
+        return new OrderResource($order);
 
         // $products = $cart->products()->keyBy('id')->map(function ($product){
         //     return [
