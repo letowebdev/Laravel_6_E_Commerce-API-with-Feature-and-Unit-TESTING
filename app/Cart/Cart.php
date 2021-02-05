@@ -62,7 +62,7 @@ class Cart
     //check if the cart is empty
     public function isEmpty()
     {
-        return $this->user->cart->sum('pivot.quantity') === 0;
+        return $this->user->cart->sum('pivot.quantity') <= 0;
     }
 
     //Calculating the subtotal

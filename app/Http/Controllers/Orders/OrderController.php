@@ -13,11 +13,13 @@ class OrderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api']);
     }
 
     public function store(OrderStoreRequest $request, Cart $cart)
-    {
+    {   
+        $cart->sync();
+
         //checking if the cart is empty before placing an order
         if ($cart->isEmpty()) {
             return response(null, 400);
@@ -32,13 +34,6 @@ class OrderController extends Controller
         // $order->load(['shipping_method']);
 
         return new OrderResource($order);
-
-        // $products = $cart->products()->keyBy('id')->map(function ($product){
-        //     return [
-        //         'quantity' => $product->pivot->quantity
-        //     ];
-        // });
-        // $order->products()->sync($products);
     }
 
     protected function createOrder(Request $request, Cart $cart)
