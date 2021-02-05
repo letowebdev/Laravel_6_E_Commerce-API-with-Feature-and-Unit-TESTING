@@ -70,4 +70,18 @@ class OrderIndexTest extends TestCase
               ]);
 
     }
+
+    public function test_it_returns_adds_the_main_product_to_the_response()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+
+        factory(Order::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->json('GET', 'api/orders')
+             ->assertSee('product');
+
+    }
 }
