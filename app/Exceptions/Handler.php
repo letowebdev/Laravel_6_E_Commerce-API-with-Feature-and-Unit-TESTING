@@ -63,6 +63,7 @@ class Handler extends ExceptionHandler
                          'api/addresses/*',
                          'api/countries',
                          'api/orders',
+                         'api/paymentmethods'
                          )) {
             return response()->json(
                 [
