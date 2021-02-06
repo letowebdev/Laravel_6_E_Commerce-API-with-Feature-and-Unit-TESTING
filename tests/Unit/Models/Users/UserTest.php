@@ -4,6 +4,7 @@ namespace Tests\Unit\Models\Users;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\ProductVariation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -74,5 +75,15 @@ class UserTest extends TestCase
         $this->assertInstanceOf(Order::class, $user->orders->first());
     }
 
-    
+    public function test_it_has_many_payment_methods()
+    {
+        $user = factory(User::class)->create();
+        $user->payment_methods()->save(
+            factory(PaymentMethod::class)->create()
+        );
+
+        $this->assertInstanceOf(PaymentMethod::class, $user->payment_methods->first());
+
+        
+    }
 }
