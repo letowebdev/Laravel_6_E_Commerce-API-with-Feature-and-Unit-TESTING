@@ -7,6 +7,7 @@ use App\Rules\ValidShippingMethod;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 
 class OrderStoreRequest extends FormRequest
@@ -31,13 +32,21 @@ class OrderStoreRequest extends FormRequest
         return [
             'address_id' => [
                 'required',
-                'exists:addresses,id',
+                Rule::exists('addresses', 'id')->where(function ($builder) {
+                    $builder->where('user_id', $this->user()->id);
+                })
             ],
             'shipping_method_id' => [
                 'required',
                 'exists:shipping_methods,id',
                 new ValidShippingMethod($this->address_id)
-            ]
+            ],
+            'payment_method_id' => [
+                'required',
+                Rule::exists('payment_methods', 'id')->where(function ($builder) {
+                    $builder->where('user_id', $this->user()->id);
+                })
+            ],
         ];
     }
 

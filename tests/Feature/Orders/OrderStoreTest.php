@@ -6,6 +6,7 @@ use App\Events\Order\OrderCreated;
 use App\Models\Address;
 use App\Models\Country;
 use App\Models\Order;
+use App\Models\PaymentMethod;
 use App\Models\ProductVariation;
 use App\Models\ShippingMethod;
 use App\Models\Stock;
@@ -118,6 +119,7 @@ class OrderStoreTest extends TestCase
     public function test_it_does_not_place_an_order_if_the_cart_is_empty()
     {
         $user = factory(User::class)->create();
+        $this->be($user);
 
         $user->cart()->sync([
             ($product = $this->productWithStock())->id => [
@@ -125,14 +127,14 @@ class OrderStoreTest extends TestCase
             ]
         ]);
 
-        list($address, $shipping) = $this->orderDependencies($user);
+        list($address, $shipping, $payment) = $this->orderDependencies($user);
 
-        $response = $this->jsonAs($user, 'POST', 'api/orders', [
+        $response = $this->json('POST', 'api/orders', [
             'address_id' => $address->id,
-            'shipping_method_id' => $shipping->id
+            'shipping_method_id' => $shipping->id,
+            'payment_method_id' => $payment->id,
         ])
             ->assertStatus(400);
-
         
     }
 
@@ -184,15 +186,19 @@ class OrderStoreTest extends TestCase
 
     protected function orderDependencies(User $user)
     {
-
-        $address = factory(Address::class)->create();
+        $address = factory(Address::class)->create([
+            'user_id' => $user->id
+        ]);
 
         $shipping = factory(ShippingMethod::class)->create();
 
         $shipping->countries()->attach($address->country);
 
+        $payment = factory(PaymentMethod::class)->create([
+            'user_id' => $user->id
+        ]);
 
-        return [$address, $shipping];
+        return [$address, $shipping, $payment];
     }
 
 
