@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Cart\Cart;
 use Illuminate\Support\ServiceProvider;
+use Stripe\Stripe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Stripe::setApiKey(config('services.stripe.secret'));
     }
 }
